@@ -3,7 +3,7 @@
 This repository contains the code for the paper: 
 [Discovering Cognitive Strategies with Tiny Recurrent Neural Networks](https://www.biorxiv.org/content/10.1101/2023.04.12.536629v3)
 
-For tutorials (e.g., generating data, adding datasets), see [](https://github.com/cgc/tinyRNN/tree/main/tutorials)
+Also see another repository for [tutorials (e.g., generating data, adding datasets)](https://github.com/cgc/tinyRNN/tree/main/tutorials)
 
 ## System requirements
 - Tested on Windows, Linux, and MacOS
