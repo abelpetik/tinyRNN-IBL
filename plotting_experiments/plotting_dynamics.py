@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from plotting import *
+from plotting_experiments.plotting import *
 from analyzing_experiments.analyzing_dynamics import *
 
 from utils import goto_root_dir

@@ -37,6 +37,7 @@ class RNNAgent(BaseAgent):
         self.num_params = sum(param.numel() for param in self.model.parameters())
         self.behav_loss_function = nn.CrossEntropyLoss(reduction='none')
         if 'device' in config:
+            print(config['device'])
             self.model.to(config['device'])
 
     @property
