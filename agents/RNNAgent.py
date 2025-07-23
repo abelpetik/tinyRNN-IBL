@@ -38,6 +38,8 @@ class RNNAgent(BaseAgent):
         self.behav_loss_function = nn.CrossEntropyLoss(reduction='none')
         if 'device' in config:
             print(config['device'])
+            config['device'] = 'cpu'  # TODO: this is a dirty hack to make it work on CPU
+            print(config['device'])
             self.model.to(config['device'])
 
     @property

@@ -4,6 +4,11 @@ import os
 from pathlib import Path
 from agents.MABCogAgent import MABCogAgent
 from simulating_experiments.simulate_experiment import simulate_exp
+from datasets.dataset_utils import Dataset
+from training_experiments.training import behavior_cv_training_config_combination
+from analyzing_experiments.analyzing_perf import run_scores_exp
+from plotting_experiments.plotting_dynamics import plot_all_models_value_change
+from analyzing_experiments.analyzing_perf import find_best_models_for_exp
 
 # Run in parent directory
 current_dir = Path(os.getcwd())
@@ -40,23 +45,21 @@ if __name__ == '__main__':
     print(data['action'][0])
     print(data['reward'][0])
 
-    # Save the data to a file
+    # Save the behavior data to a file
     fn = 'C:\\Data\\tinyRNN\\custom_dataset_data.pkl'
     joblib.dump({'action': data['action'],
                  'reward': data['reward'],
                  }, fn)
 
-
-
+    """
     x = np.zeros((3, 4, 5))
 
     items = np.array([0, 2, 3], dtype=int)
     x[0, items, 0] = 1
     print(x)
+    """
 
-
-
-    from datasets.dataset_utils import Dataset
+    # Creating a Dataset object with the behavior data loaded from the file
     behav_data_spec = {
         'data': fn,
         'input_format': [
@@ -78,8 +81,7 @@ if __name__ == '__main__':
     print(dd.torch_beahv_input[:, 0, 5][:10])
 
 
-    from training_experiments.training import behavior_cv_training_config_combination
-
+    # Configure the base config for training
     base_config = {
           ### dataset info
           'dataset': 'Simple',
@@ -125,22 +127,39 @@ if __name__ == '__main__':
       'hidden_dim': [2,5],
     }
 
+    # Run the training of the agent
     behavior_cv_training_config_combination(base_config, config_ranges, n_jobs=1, verbose_level=1)
 
 
-
-
-    ll = np.mean(np.concatenate([
-        row['trial_log_likelihood']
-        for row in data['mid_vars']
-    ]))
+    ll = np.mean(np.concatenate([row['trial_log_likelihood'] for row in data['mid_vars']]))
     print('average log likelihood of generated data', ll)
 
 
 
     exp_folder = '5ab_mf'
     # from first tutorial ipynb
-    from analyzing_experiments.analyzing_perf import run_scores_exp
+    # order of analysis steps as follows:
+    # find_best_models_for_exp
+    # run_scores_exp
+    # plot_all_models_value_change
+
+    # Identify the best model
+    from analyzing_experiments.analyzing_perf import find_best_models_for_exp
+
+    find_best_models_for_exp(
+        exp_folder, 'MABCog',
+        additional_rnn_keys={
+            'model_identifier_keys': ['block', 'distill', 'pretrained', 'distill_temp', 'teacher_prop', ], },
+        rnn_sort_keys=['block', 'hidden_dim'],
+        has_rnn=True,
+        has_cog=False,
+        return_dim_est=True,
+        include_acc=True,
+        check_missing=False,
+    )
+
+
+
 
     run_scores_exp(
         exp_folder, demask=False,
@@ -155,7 +174,7 @@ if __name__ == '__main__':
         has_rnn=False
     )
 
-    from plotting_experiments.plotting_dynamics import plot_all_models_value_change
+
 
     dynamics_plot_pipeline = [
         '2d_logit_change', # logit vs logit change
@@ -163,9 +182,6 @@ if __name__ == '__main__':
     plot_all_models_value_change(exp_folder, plots=dynamics_plot_pipeline, save_pdf=True)
 
 
-
-
-    from analyzing_experiments.analyzing_perf import find_best_models_for_exp
 
     exp_folder = '5ab_mf'
     find_best_models_for_exp(
