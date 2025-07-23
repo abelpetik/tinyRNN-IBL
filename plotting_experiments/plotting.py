@@ -87,7 +87,7 @@ def control_ticks(x_range,y_range):
 def plot_2d_logit_takens(x, trial_types, x_range=None, y_range=None, x_label='', y_label='', title='', ref_line=True,
                          ref_x=0.0, ref_y=0.0,
                          coloring_mapping=None, color_spec=None, labels=None,
-                         legend=False, plot_params=None):
+                         legend=True, plot_params=None):
     # assume that x and trial_types only come from one block
     y = x[1:]
     trial_types = trial_types[1:]
@@ -140,7 +140,7 @@ def plot_2d_logit_takens(x, trial_types, x_range=None, y_range=None, x_label='',
 def plot_2d_values(x, y, trial_types, x_range=None, y_range=None, x_label='', y_label='', title='', ref_line=True,
                          ref_x=0.0, ref_y=0.0, ref_diag=False, hist=False, show_dot=True, show_curve=False,
                    coloring_mapping=None, color_spec=None, labels=None,
-                   legend=False, plot_params=None):
+                   legend=True, plot_params=None):
     trial_types = trial_types.astype(int)
     unique_trial_types = np.unique(trial_types)
     if coloring_mapping is not None:
@@ -151,10 +151,9 @@ def plot_2d_values(x, y, trial_types, x_range=None, y_range=None, x_label='', y_
         # color_spec = np.array(['cornflowerblue', 'mediumblue', 'tomato', 'firebrick'])
         color_spec = np.array(['cornflowerblue', 'mediumblue', 'tomato', 'firebrick'])
     elif len(unique_trial_types) == 8:
-        labels = ['A1 S1 R=0', 'A1 S1 R=1', 'A1 S2 R=0', 'A1 S2 R=1', 'A2 S1 R=0', 'A2 S1 R=1', 'A2 S2 R=0',
-                  'A2 S2 R=1']
+        labels = ['PL R=0 SL', 'PL R=0 SR', 'PL R=1 SL', 'PL R=1 SR', 'PR R=0 SL', 'PR R=0 SR', 'PR R=1 SL', 'PR R=1 SR']
         # color_spec = np.array(['cornflowerblue', 'mediumblue', 'tomato', 'firebrick', 'cornflowerblue', 'mediumblue', 'tomato', 'firebrick']) # state coloring
-        color_spec = np.array(['cornflowerblue', 'mediumblue', 'cornflowerblue', 'mediumblue', 'tomato', 'firebrick', 'tomato', 'firebrick']) # action coloring
+        color_spec = np.array(['navy', 'blue', 'cornflowerblue', 'lightsteelblue', 'yellow', 'orange', 'tomato', 'red']) # action coloring
     elif len(unique_trial_types) == 10:
         labels = ['A1 S1 R=0', 'A1 S1 R=1', 'A2 S1 R=0', 'A2 S1 R=1', 'A3 S1 R=0', 'A3 S1 R=1',
                   'A4 S1 R=0', 'A4 S1 R=1', 'A5 S1 R=0', 'A5 S1 R=1']
@@ -176,6 +175,8 @@ def plot_2d_values(x, y, trial_types, x_range=None, y_range=None, x_label='', y_
                    s=s, alpha=alpha,#facecolors='none', edgecolors=color_spec[trial_types]
                    rasterized=True,
                    )
+        for i in range(len(color_spec)):
+            ax.scatter([], [], color=color_spec[i], label=labels[i])
     elif show_dot and coloring_mapping is not None:
         ax.scatter(x, y, color=coloring_mapping(trial_types),
                    s=s, alpha=alpha,
