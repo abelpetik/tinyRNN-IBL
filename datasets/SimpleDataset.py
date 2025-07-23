@@ -62,6 +62,8 @@ class SimpleDataset:
         # Inputs for compatibility
         self.torch_beahv_input = None
         self.behav = {}
+        behav = self.behav
+        behav['trial_type'] = self.data['trial_type']
 
     def load_data(self, behav_data_spec, neuro_data_spec=None, verbose=True):
         '''

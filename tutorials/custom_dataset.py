@@ -45,10 +45,14 @@ if __name__ == '__main__':
     print(data['action'][0])
     print(data['reward'][0])
 
+    from tutorials.helper_functions import detect_trial_type
+    behav_data_with_trial_type = detect_trial_type(data)
+
     # Save the behavior data to a file
     fn = 'C:\\Data\\tinyRNN\\custom_dataset_data.pkl'
     joblib.dump({'action': data['action'],
                  'reward': data['reward'],
+                 'trial_type': behav_data_with_trial_type['trial_type'],
                  }, fn)
 
     """
@@ -158,40 +162,21 @@ if __name__ == '__main__':
         check_missing=False,
     )
 
-
-
-
     run_scores_exp(
         exp_folder, demask=False,
         pointwise_loss=False,
-        model_filter={'distill': 'none', 'cog_type': 'MF'},
+        model_filter={'distill': 'none', 'rnn_type': 'GRU'},
         overwrite_config={
             # 'behav_data_spec': {'augment': True},
             'device': 'cpu',
         },
         include_data='all',
         has_cog=False,
-        has_rnn=False
     )
-
 
 
     dynamics_plot_pipeline = [
         '2d_logit_change', # logit vs logit change
     ]
     plot_all_models_value_change(exp_folder, plots=dynamics_plot_pipeline, save_pdf=True)
-
-
-
-    exp_folder = '5ab_mf'
-    find_best_models_for_exp(
-        exp_folder, 'MABCog',
-        additional_rnn_keys={'model_identifier_keys': ['block','distill','pretrained', 'distill_temp','teacher_prop',],},
-        rnn_sort_keys=['block', 'hidden_dim'],
-        has_rnn=True,
-        has_cog=False,
-        return_dim_est=True,
-        include_acc=True,
-        check_missing=False,
-    )
 

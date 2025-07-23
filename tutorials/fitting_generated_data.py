@@ -1,10 +1,11 @@
-# Run in parent directory
 import os
-print(os.getcwd())
-if os.getcwd().split('/')[-1] != 'tinyRNN':
+from pathlib import Path
+
+# Run in parent directory
+current_dir = Path(os.getcwd())
+if current_dir.stem != 'tinyRNN-IBL':
     os.chdir('..')
-    print(os.getcwd())
-assert os.getcwd().split('\\')[-1] == 'tinyRNN'
+assert Path(os.getcwd()).stem == 'tinyRNN-IBL'
 
 import numpy as np
 

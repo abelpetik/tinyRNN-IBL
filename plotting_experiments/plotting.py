@@ -155,6 +155,12 @@ def plot_2d_values(x, y, trial_types, x_range=None, y_range=None, x_label='', y_
                   'A2 S2 R=1']
         # color_spec = np.array(['cornflowerblue', 'mediumblue', 'tomato', 'firebrick', 'cornflowerblue', 'mediumblue', 'tomato', 'firebrick']) # state coloring
         color_spec = np.array(['cornflowerblue', 'mediumblue', 'cornflowerblue', 'mediumblue', 'tomato', 'firebrick', 'tomato', 'firebrick']) # action coloring
+    elif len(unique_trial_types) == 10:
+        labels = ['A1 S1 R=0', 'A1 S1 R=1', 'A2 S1 R=0', 'A2 S1 R=1', 'A3 S1 R=0', 'A3 S1 R=1',
+                  'A4 S1 R=0', 'A4 S1 R=1', 'A5 S1 R=0', 'A5 S1 R=1']
+        color_spec = np.array(
+            ['cornflowerblue', 'mediumblue', 'cornflowerblue', 'mediumblue', 'tomato', 'firebrick', 'tomato',
+             'firebrick', 'cornflowerblue', 'mediumblue'])  # action coloring
     if hist:
         fig, ax, ax_histx, ax_histy = plot_start_scatter_hist()
     else:
