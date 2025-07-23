@@ -2,9 +2,12 @@ import numpy as np
 import joblib
 # Run in parent directory
 import os
-if os.getcwd().split('/')[-1] != 'tinyRNN':
+from pathlib import Path
+
+current_dir = Path(os.getcwd())
+if current_dir.stem != 'tinyRNN-IBL':
     os.chdir('..')
-assert os.getcwd().split('\\')[-1] == 'tinyRNN'
+assert Path(os.getcwd()).stem == 'tinyRNN-IBL'
 
 
 class MultiArmedBandit:
