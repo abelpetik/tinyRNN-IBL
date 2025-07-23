@@ -8,7 +8,7 @@ import os
 
 def run():
     path = Path.cwd()
-    while len(path.name) and path.name != 'tinyRNN':
+    while len(path.name) and path.name != 'tinyRNN-IBL':
         path = path.parent
 
     if len(path.name):
